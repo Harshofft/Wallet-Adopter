@@ -1,0 +1,30 @@
+{
+  "name": "wallet-adopter",
+  "version": "1.0.0",
+  "description": "Solana wallet adopter – generate wallets and send SOL",
+  "main": "index.js",
+  "bin": {
+    "wallet-adopter": "./index.js"
+  },
+  "scripts": {
+    "test": "jest --testPathPatterns=test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harshofft/Wallet-Adopter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Harshofft/Wallet-Adopter/issues"
+  },
+  "homepage": "https://github.com/Harshofft/Wallet-Adopter#readme",
+  "dependencies": {
+    "@solana/web3.js": "^1.98.4"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
+}
