@@ -5,17 +5,19 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import Refresh from "./assets/image.png";
 import {
   WalletModalProvider,
   WalletDisconnectButton,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
+
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 function Wallerbtn() {
   const { publicKey } = useWallet();
   return (
-    <div className="sticky top-4 z-50 ml-auto w-fit rounded-xl border border-white/15 bg-slate-900/70 p-1.5 shadow-lg backdrop-blur md:fixed md:right-4 md:top-4">
+    <div className="ml-auto w-fit rounded-2xl border border-cyan-200/20 bg-slate-900/75 p-1.5 shadow-xl shadow-cyan-950/30 backdrop-blur-xl">
       {!publicKey && <WalletMultiButton />}
       {publicKey && <WalletDisconnectButton />}
     </div>
@@ -55,10 +57,18 @@ function UserAddress() {
   const solBalance = useMemo(() => {
     return (balance / 1_000_000_000).toFixed(4);
   }, [balance]);
-
+  const [rotate, setRotate] = useState(false);
+   async function refresh() {
+    
+    if (publicKey) {
+      const newBalance = await connection.getBalance(publicKey);
+      setBalance(newBalance);
+      
+    }
+   }
   return (
     // main container
-    <div className="w-full rounded-2xl border border-white/20 bg-linear-to-br from-slate-900/90 via-slate-800/80 to-cyan-900/70 p-4 text-white shadow-2xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/20 sm:p-5 md:fixed md:left-4 md:top-24 md:w-[320px]">
+    <div className="w-full rounded-3xl border border-cyan-200/20 bg-linear-to-br from-slate-900/90 via-slate-800/85 to-cyan-900/75 p-5 text-white shadow-2xl shadow-cyan-950/40 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/25 sm:p-6">
       <div className="mb-3 flex items-center justify-between gap-2 border-b border-white/15 pb-3">
         <div className="flex items-center gap-2">
           <span className="relative flex h-2.5 w-2.5">    
@@ -102,6 +112,9 @@ function UserAddress() {
           <p className="text-xl font-semibold text-white transition-transform duration-300 hover:scale-[1.02]">
             {publicKey ? `${solBalance} SOL` : "0.0000 SOL"}
           </p>
+          <button  className="mt-1 inline-flex items-center justify-center rounded-xl border border-cyan-200/30 bg-linear-to-r from-cyan-400 via-sky-400 to-emerald-400 px-3 py-2 text-sm font-semibold text-slate-900 transition-all duration-500 hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-45  " onClick={refresh}>
+            <img src={Refresh} alt="Refresh" className="h-4 w-4 cursor-pointer transition-transform duration-500  "  />
+          </button>
           <p className="mt-1 text-[11px] text-slate-400">Devnet RPC</p>
         </div>
       </div>
@@ -110,7 +123,7 @@ function UserAddress() {
 }
 function SendTransaction() {
   // require to send transaction
-  //and send transaction  comes from solana wallet adapter which send the req 
+  //and send transaction  comes from solana wallet adapter which send the req
   const { publicKey, sendTransaction } = useWallet();
   const { connection } = useConnection();
   const [address, setAddress] = useState("");
@@ -157,7 +170,7 @@ function SendTransaction() {
   const canSend = !!publicKey && Number(amount) > 0 && address.trim().length > 20;
 
   return (
-    <div className="w-full rounded-2xl border border-cyan-300/20 bg-linear-to-br from-slate-900/95 via-slate-800/90 to-cyan-950/80 p-4 text-white shadow-2xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-400/20 sm:p-5 md:fixed md:right-4 md:top-24 md:w-90">
+    <div className="w-full rounded-3xl border border-cyan-300/20 bg-linear-to-br from-slate-900/95 via-slate-800/90 to-cyan-950/80 p-5 text-white shadow-2xl shadow-cyan-950/40 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-400/25 sm:p-6">
       <div className="mb-3 flex items-center justify-between border-b border-white/10 pb-3">
         <p className="text-xs uppercase tracking-[0.16em] text-cyan-300">Send SOL</p>
         <span
@@ -228,16 +241,22 @@ function App() {
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={[]} autoConnect>
         <WalletModalProvider>
-          <main className="min-h-screen bg-linear-to-b from-[#06151f] via-[#0a2231] to-[#06151f] px-4 py-4 text-white sm:px-6 md:px-8 md:py-6">
+          <main className="min-h-screen bg-linear-to-b from-[#041019] via-[#0a2231] to-[#07141e] px-4 py-6 text-white sm:px-6 md:px-10 md:py-10">
             <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-              <div className="absolute -left-12 top-24 h-44 w-44 rounded-full bg-cyan-500/15 blur-3xl"></div>
-              <div className="absolute -right-8 bottom-16 h-56 w-56 rounded-full bg-emerald-400/10 blur-3xl"></div>
+              <div className="absolute -left-20 top-16 h-64 w-64 rounded-full bg-cyan-500/15 blur-3xl"></div>
+              <div className="absolute right-20 top-28 h-52 w-52 rounded-full bg-sky-500/10 blur-3xl"></div>
+              <div className="absolute -right-8 bottom-10 h-72 w-72 rounded-full bg-emerald-400/10 blur-3xl"></div>
             </div>
 
-            <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 md:min-h-90 md:pt-16">
-              <Wallerbtn />
-              <UserAddress />
-              <SendTransaction />
+            <div className="mx-auto w-full max-w-6xl space-y-6">
+              <div className="rounded-3xl border border-white/10 bg-slate-900/45 px-4 py-3 backdrop-blur-xl sm:px-5">
+                <Wallerbtn />
+              </div>
+
+              <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <UserAddress />
+                <SendTransaction />
+              </div>
             </div>
           </main>
         </WalletModalProvider>
