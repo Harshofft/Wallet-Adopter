@@ -57,7 +57,7 @@ function UserAddress() {
   const solBalance = useMemo(() => {
     return (balance / 1_000_000_000).toFixed(4);
   }, [balance]);
-  const [rotate, setRotate] = useState(false);
+
    async function refresh() {
     
     if (publicKey) {
