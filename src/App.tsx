@@ -112,8 +112,8 @@ function UserAddress() {
           <p className="text-xl font-semibold text-white transition-transform duration-300 hover:scale-[1.02]">
             {publicKey ? `${solBalance} SOL` : "0.0000 SOL"}
           </p>
-          <button  className="mt-1 inline-flex items-center justify-center rounded-xl border border-cyan-200/30 bg-linear-to-r from-cyan-400 via-sky-400 to-emerald-400 px-3 py-2 text-sm font-semibold text-slate-900 transition-all duration-500 hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-45  " onClick={refresh}>
-            <img src={Refresh} alt="Refresh" className="h-4 w-4 cursor-pointer transition-transform duration-500  "  />
+          <button  className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl border border-cyan-200/30 bg-linear-to-r from-cyan-400 via-sky-400 to-emerald-400 px-3 py-2 text-sm font-semibold text-slate-900 transition-all duration-300 hover:scale-[1.08] hover:shadow-lg hover:shadow-cyan-400/50 active:scale-95 disabled:cursor-not-allowed disabled:opacity-45" onClick={refresh}>
+            <img src={Refresh} alt="Refresh" className="h-4 w-4 cursor-pointer transition-transform duration-300 group-hover:rotate-180"  /> Refresh
           </button>
           <p className="mt-1 text-[11px] text-slate-400">Devnet RPC</p>
         </div>
@@ -317,7 +317,7 @@ function SendTransaction() {
           <button
             onClick={handleSend}
             disabled={!canSend || status === "sending"}
-            className="group relative mt-1 inline-flex w-full items-center justify-center overflow-hidden rounded-xl border border-cyan-200/30 bg-linear-to-r from-cyan-400 via-sky-400 to-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-900 transition-all duration-300 hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-45"
+            className="group relative mt-1 inline-flex w-full items-center justify-center overflow-hidden rounded-xl border border-cyan-200/30 bg-linear-to-r from-cyan-400 via-sky-400 to-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-900 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-400/60 active:scale-95 disabled:cursor-not-allowed disabled:opacity-45"
           >
             <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full"></span>
             <span className="relative">{status === "sending" ? "Sending..." : "Send Transaction"}</span>
@@ -337,90 +337,85 @@ function SendTransaction() {
         </div>
       </div>
 
-      <div className="w-full rounded-3xl border border-white/15 bg-slate-900/60 p-4 shadow-2xl shadow-cyan-950/30 backdrop-blur-xl sm:p-5">
-        <p className="mb-3 text-lg font-semibold text-slate-100">Saved Contact</p>
-
-        <div className="hidden grid-cols-[1fr,1.6fr,auto] items-center gap-3 rounded-2xl border border-white/15 bg-black/25 px-3 py-2 text-xs uppercase tracking-wider text-slate-300 sm:grid">
-          <span>Name</span>
-          <span>Public Key</span>
-          <span>Button</span>
+      <div className="w-full rounded-3xl border border-cyan-300/20 bg-linear-to-br from-slate-900/90 via-slate-800/80 to-emerald-950/60 p-5 shadow-2xl shadow-cyan-950/30 backdrop-blur-xl sm:p-6">
+        <div className="mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+          <p className="text-sm font-semibold uppercase tracking-[0.15em] text-emerald-300">Saved Contacts</p>
+          <span className="text-xs text-slate-400">({contacts.length})</span>
         </div>
 
-        <div className="mt-2 space-y-2">
-          {contacts.length === 0 && (
-            <p className="rounded-xl border border-dashed border-white/15 px-3 py-3 text-sm text-slate-400">
-              No saved contact yet.
-            </p>
-          )}
-
-          {contacts.map((contact) => (
-            <div
-              key={`${contact.name}-${contact.address}`}
-              className="grid grid-cols-1 gap-2 rounded-2xl border border-white/10 bg-black/20 p-3 text-sm text-slate-100 sm:grid-cols-[1fr,1.6fr,auto] sm:items-center sm:gap-3"
-            >
-              <p className="font-medium text-cyan-200">{contact.name}</p>
-              <p className="truncate font-mono text-xs text-slate-300" title={contact.address}>
-                {contact.address}
-              </p>
-              <button
-                onClick={() => {
-                  // Quick fill from saved contact to send faster.
-                  setName(contact.name);
-                  setAddress(contact.address);
-                }}
-                className="rounded-lg border border-cyan-300/30 bg-cyan-400/20 px-3 py-1.5 text-xs font-semibold text-cyan-100 transition hover:bg-cyan-300/25"
+        {contacts.length === 0 ? (
+          <p className="rounded-2xl bg-black/30 px-4 py-6 text-center text-sm text-slate-400">
+            No saved contacts yet. Send a transfer to save one.
+          </p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {contacts.map((contact) => (
+              <div
+                key={`${contact.name}-${contact.address}`}
+                className="flex items-center gap-2 rounded-2xl border border-emerald-300/30 bg-emerald-400/10 px-3 py-2 transition-all duration-300 hover:bg-emerald-400/20 hover:shadow-lg hover:shadow-emerald-400/30"
               >
-                Use
-              </button>
-            </div>
-          ))}
-        </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-emerald-200">{contact.name}</p>
+                  <p className="truncate text-[10px] text-emerald-300/70 font-mono" title={contact.address}>
+                    {contact.address.slice(0, 8)}...
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setName(contact.name);
+                    setAddress(contact.address);
+                  }}
+                  className="ml-2 rounded-lg bg-emerald-500 px-2.5 py-1 text-[11px] font-bold text-slate-900 transition-all duration-300 hover:scale-110 hover:bg-emerald-400 active:scale-95"
+                >
+                  Send
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      <div className="w-full rounded-3xl border border-white/15 bg-slate-900/60 p-4 shadow-2xl shadow-cyan-950/30 backdrop-blur-xl sm:p-5">
-        <p className="mb-3 text-lg font-semibold text-slate-100">Transfer History</p>
-
-        <div className="hidden grid-cols-[1fr,1fr,1fr,auto,auto] items-center gap-3 rounded-2xl border border-white/15 bg-black/25 px-3 py-2 text-xs uppercase tracking-wider text-slate-300 sm:grid">
-          <span>Transfer ID</span>
-          <span>Date</span>
-          <span>Amount (SOL)</span>
-          <span>To</span>
-          <span>Action</span>
+      <div className="w-full rounded-3xl border border-blue-300/20 bg-linear-to-br from-slate-900/90 via-slate-800/80 to-blue-950/60 p-5 shadow-2xl shadow-cyan-950/30 backdrop-blur-xl sm:p-6">
+        <div className="mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+          <p className="text-sm font-semibold uppercase tracking-[0.15em] text-blue-300">Recent Transfers</p>
+          <span className="text-xs text-slate-400">({transactions.length})</span>
         </div>
 
-        <div className="mt-2 space-y-2">
-          {transactions.length === 0 && (
-            <p className="rounded-xl border border-dashed border-white/15 px-3 py-3 text-sm text-slate-400">
-              No transfer history yet.
-            </p>
-          )}
-
-          {transactions.map((transaction) => (
-            <div
-              key={transaction.id}
-              className="grid grid-cols-1 gap-2 rounded-2xl border border-white/10 bg-black/20 p-3 text-sm text-slate-100 sm:grid-cols-[1fr,1fr,1fr,auto,auto] sm:items-center sm:gap-3"
-            >
-              <p className="truncate font-mono text-xs text-slate-300" title={transaction.id}>
-                {transaction.id.slice(0, 10)}...
-              </p>
-              <p className="text-xs text-slate-400">{transaction.date}</p>
-              <p className="text-cyan-200 font-medium">{transaction.amount} SOL</p>
-              <p className="text-emerald-300 font-medium">{transaction.recipientName}</p>
-              <button
-                onClick={() => copyToClipboard(transaction.id)}
-                className="rounded-lg border border-cyan-300/30 bg-cyan-400/20 px-3 py-1.5 text-xs font-semibold text-cyan-100 transition hover:bg-cyan-300/25"
+        {transactions.length === 0 ? (
+          <p className="rounded-2xl bg-black/30 px-4 py-6 text-center text-sm text-slate-400">
+            No transfer history yet.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {transactions.slice(0, 5).map((transaction) => (
+              <div
+                key={transaction.id}
+                className="flex items-center justify-between rounded-2xl border border-blue-300/30 bg-blue-400/10 px-4 py-3 transition-all duration-300 hover:bg-blue-400/15"
               >
-                Copy
-              </button>
-            </div>
-          ))}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-xs font-bold text-blue-200">{transaction.recipientName}</p>
+                    <span className="text-[10px] text-blue-300/50">→</span>
+                    <p className="text-xs font-semibold text-emerald-300">{transaction.amount} SOL</p>
+                  </div>
+                  <p className="text-[10px] text-slate-400">{transaction.date}</p>
+                </div>
+                <button
+                  onClick={() => copyToClipboard(transaction.id)}
+                  className="ml-3 rounded-lg bg-blue-500 px-2.5 py-1 text-[11px] font-bold text-slate-900 transition-all duration-300 hover:scale-110 hover:bg-blue-400 active:scale-95"
+                >
+                  Copy
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
 
-          {copyFeedback && (
-            <p className="mt-2 rounded-lg bg-emerald-400/20 px-3 py-2 text-xs font-medium text-emerald-300">
-              ✓ Transaction ID copied!
-            </p>
-          )}
-        </div>
+        {copyFeedback && (
+          <p className="mt-3 rounded-lg bg-emerald-400/20 px-3 py-2 text-xs font-medium text-emerald-300 text-center">
+            ✓ Copied to clipboard!
+          </p>
+        )}
       </div>
     </div>
   );
